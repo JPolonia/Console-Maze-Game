@@ -1,6 +1,6 @@
 package application;
 
-
+//TEst change
 public class Hero extends GameObject {
 
 	private boolean hasKey = false;
