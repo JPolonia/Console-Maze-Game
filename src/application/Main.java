@@ -61,6 +61,7 @@ public class Main {
 				case 's':
 					hero.moveDown(screen, hero);
 					break;
+				default: break;
 			}
 			//isRunning = (hero.isFree || hero.isDead) ? false:true;
 		}
