@@ -64,10 +64,10 @@ public class GameScreen {
 	
 	//Check if dragon in near
 	public boolean nearDragon(int x, int y) {
-		if (this.screenMatrix[y][x-1] == 'D') return true;
-		if (this.screenMatrix[y][x+1] == 'D') return true;
-		if (this.screenMatrix[y+1][x] == 'D') return true;
-		if (this.screenMatrix[y-1][x] == 'D') return true;
+		if (x>0) if (this.screenMatrix[y][x-1] == 'D') return true;
+		if (x<9) if (this.screenMatrix[y][x+1] == 'D') return true;
+		if (y<9) if (this.screenMatrix[y+1][x] == 'D') return true;
+		if (y>0) if (this.screenMatrix[y-1][x] == 'D') return true;
 		return false;
 	}
 	
