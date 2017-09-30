@@ -62,6 +62,7 @@ public class Main {
 					hero.moveDown(screen, hero);
 					break;
 			}
+			//isRunning = (hero.isFree || hero.isDead) ? false:true;
 		}
 	}
 	

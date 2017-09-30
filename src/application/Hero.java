@@ -4,7 +4,8 @@ package application;
 public class Hero extends GameObject {
 
 	private boolean hasKey = false;
-	private boolean isFree = false;
+	public boolean isFree = false;
+	public boolean isDead = false;
 	
 	public Hero(char symbol) {
 		setSymbol(symbol);
@@ -26,28 +27,52 @@ public class Hero extends GameObject {
 		screen.setObjectOnLocation(hero,x,y);
 	}
 	
+	private void moveHero(GameScreen screen, Hero hero, int x, int y, int x_old, int y_old){
+		//Check if there is a Dragon waiting...
+		if(screen.nearDragon(x,y)){
+			//Is eaten by dragon - GAME OVER!
+			hero.isDead = true;
+			transformHero(screen,hero,'-');
+			screen.PrintGameOver();
+		}
+			switch (screen.getObjectOnLocation(x,y)){
+				case 'X':   //Hits a wall!
+							break;		
+							
+				case 'E': 	//If he has the key he can exit - GAME COMPLETED!
+							if(hero.hasKey) {screen.PrintGameCompleted();transformHero(screen,hero,'o');}
+							else {screen.PrintExitClose();break;}
+							
+				case 'K':	//Gets the key!
+							hero.hasKey = true;
+							
+				default: 	hero.setX(x);
+							hero.setY(y);
+							screen.setObjectOnLocation(hero,x,y);
+							screen.ClearScreenLocation(x_old, y_old);
+							break;
+			}
+		
+	}
+	
 	public void moveLeft(GameScreen screen, Hero hero) {
-		//CheckifvalidLocation
-		hero.setX(getX() - 1);
-		screen.setObjectOnLocation(hero, hero.getX(), hero.getY());
-		screen.ClearScreenLocation(hero.getX() + 1, hero.getY());
+		moveHero(screen,hero,hero.getX()-1,hero.getY(),hero.getX(),hero.getY());
 	}
 	
 	public void moveRight(GameScreen screen, Hero hero) {
-		hero.setX(getX() + 1);
-		screen.setObjectOnLocation(hero, hero.getX(), hero.getY());
-		screen.ClearScreenLocation(hero.getX() - 1, hero.getY());
+		moveHero(screen,hero,hero.getX() + 1,hero.getY(),hero.getX(),hero.getY());
 	}
 	
 	public void moveUp(GameScreen screen, Hero hero) {
-		hero.setY(getY() - 1);
-		screen.setObjectOnLocation(hero, hero.getX(), hero.getY());
-		screen.ClearScreenLocation(hero.getX(), hero.getY() + 1);
+		moveHero(screen,hero,hero.getX(),hero.getY()-1,hero.getX(),hero.getY());
 	}
 	
 	public void moveDown(GameScreen screen, Hero hero) {
-		hero.setY(getY() + 1);
-		screen.setObjectOnLocation(hero, hero.getX(), hero.getY());
-		screen.ClearScreenLocation(hero.getX(), hero.getY() - 1);
+		moveHero(screen,hero,hero.getX(),hero.getY()+1,hero.getX(),hero.getY());
+	}
+	
+	public void transformHero(GameScreen screen,Hero hero, char symbol) {
+		screen.clearHero(hero,symbol);
+		hero.setSymbol(symbol);
 	}
 }
